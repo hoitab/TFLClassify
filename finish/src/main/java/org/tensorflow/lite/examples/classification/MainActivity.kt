@@ -208,11 +208,17 @@ class MainActivity : AppCompatActivity() {
     private class ImageAnalyzer(ctx: Context, private val listener: RecognitionListener) :
         ImageAnalysis.Analyzer {
 
-        // TODO 6. Optional GPU acceleration
-        private val options = Model.Options.Builder().setDevice(Model.Device.GPU).build()
-
         // TODO 1: Add class variable TensorFlow Lite Model
-        private val flowerModel = FlowerModel.newInstance(ctx, options)
+        // Initializing the flowerModel by lazy so that it runs in the same thread when the process
+        // method is called.
+        private val flowerModel: FlowerModel by lazy{
+
+            // TODO 6. Optional GPU acceleration
+            val options = Model.Options.Builder().setDevice(Model.Device.GPU).build()
+
+            // Initialize the Flower Model
+            FlowerModel.newInstance(ctx, options)
+        }
 
         override fun analyze(imageProxy: ImageProxy) {
 
