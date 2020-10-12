@@ -47,6 +47,7 @@ import org.tensorflow.lite.examples.classification.viewmodel.RecognitionListView
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.model.Model
 import java.util.concurrent.Executors
+import org.tensorflow.lite.gpu.CompatibilityList
 
 // Constants
 private const val MAX_RESULT_DISPLAY = 3 // Maximum number of results displayed
@@ -197,7 +198,7 @@ class MainActivity : AppCompatActivity() {
                 )
 
                 // Attach the preview to preview view, aka View Finder
-                preview.setSurfaceProvider(viewFinder.createSurfaceProvider())
+                preview.setSurfaceProvider(viewFinder.surfaceProvider)
             } catch (exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
             }
@@ -214,7 +215,15 @@ class MainActivity : AppCompatActivity() {
         private val flowerModel: FlowerModel by lazy{
 
             // TODO 6. Optional GPU acceleration
-            val options = Model.Options.Builder().setDevice(Model.Device.GPU).build()
+            val compatList = CompatibilityList()
+
+            val options = if(compatList.isDelegateSupportedOnThisDevice) {
+                Log.d(TAG, "This device is GPU Compatible ")
+                Model.Options.Builder().setDevice(Model.Device.GPU).build()
+            } else {
+                Log.d(TAG, "This device is GPU Incompatible ")
+                Model.Options.Builder().setNumThreads(4).build()
+            }
 
             // Initialize the Flower Model
             FlowerModel.newInstance(ctx, options)
@@ -239,7 +248,7 @@ class MainActivity : AppCompatActivity() {
             }
 
 //            // START - Placeholder code at the start of the codelab. Comment this block of code out.
-//            for (i in 0..MAX_RESULT_DISPLAY-1){
+//            for (i in 0 until MAX_RESULT_DISPLAY){
 //                items.add(Recognition("Fake label $i", Random.nextFloat()))
 //            }
 //            // END - Placeholder code at the start of the codelab. Comment this block of code out.

@@ -195,7 +195,7 @@ class MainActivity : AppCompatActivity() {
                 )
 
                 // Attach the preview to preview view, aka View Finder
-                preview.setSurfaceProvider(viewFinder.createSurfaceProvider())
+                preview.setSurfaceProvider(viewFinder.surfaceProvider)
             } catch (exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
             }
@@ -224,7 +224,7 @@ class MainActivity : AppCompatActivity() {
             // TODO 4: Converting the top probability items into a list of recognitions
 
             // START - Placeholder code at the start of the codelab. Comment this block of code out.
-            for (i in 0..MAX_RESULT_DISPLAY-1){
+            for (i in 0 until MAX_RESULT_DISPLAY){
                 items.add(Recognition("Fake label $i", Random.nextFloat()))
             }
             // END - Placeholder code at the start of the codelab. Comment this block of code out.
