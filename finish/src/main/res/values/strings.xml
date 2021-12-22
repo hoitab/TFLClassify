@@ -15,7 +15,7 @@
   -->
 
 <resources>
-    <string name="app_name">TFL Classify</string>
-    <string name="permission_deny_text">Required permissions denied. Exiting.</string>
+    <string name="app_name">Kestrel</string>
+    <string name="permission_deny_text">Required permissions denied. Exiting application.</string>
     <string name="tensorflow_lite_logo_description">TensorFlow Lite logo</string>
 </resources>
